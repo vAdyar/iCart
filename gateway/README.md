@@ -12,15 +12,17 @@ Before you can build this project, you must install and configure the following 
 
 1. [Node.js][]: We use Node to run a development web server and build the project.
    Depending on your system, you can install Node either from source or as a pre-packaged bundle.
+2. [Yarn][]: We use Yarn to manage Node dependencies.
+   Depending on your system, you can install Yarn either from source or as a pre-packaged bundle.
 
 After installing Node, you should be able to run the following command to install development tools.
 You will only need to run this command when dependencies change in [package.json](package.json).
 
 ```
-npm install
+yarn install
 ```
 
-We use npm scripts and [Webpack][] as our build system.
+We use yarn scripts and [Webpack][] as our build system.
 
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
@@ -30,14 +32,14 @@ auto-refreshes when files change on your hard drive.
 ./mvnw
 
 
-npm start
+yarn start
 ```
 
-Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
-Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
+Yarn is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
+specifying a newer version in [package.json](package.json). You can also run `yarn update` and `yarn install` to manage dependencies.
+Add the `help` flag on any command to see how you can use it. For example, `yarn help update`.
 
-The `npm run` command will list all of the scripts available to run for this project.
+The `yarn run` command will list all of the scripts available to run for this project.
 
 ## OAuth 2.0 / OpenID Connect
 
@@ -119,13 +121,13 @@ Note: [Workbox](https://developers.google.com/web/tools/workbox/) powers JHipste
 For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
 
 ```
-npm install --save --save-exact leaflet
+yarn add --exact leaflet
 ```
 
 To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
 
 ```
-npm install --save-dev --save-exact @types/leaflet
+yarn add --dev --exact @types/leaflet
 ```
 
 Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
@@ -184,7 +186,7 @@ To launch your application's tests, run:
 Unit tests are run by [Jest][] and written with [Jasmine][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
 
 ```
-npm test
+yarn test
 ```
 
 For more information, refer to the [Running tests page][].

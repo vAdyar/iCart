@@ -24,7 +24,7 @@
     "enableSwaggerCodegen": false,
     "embeddableLaunchScript": false,
     "useSass": true,
-    "clientPackageManager": "npm",
+    "clientPackageManager": "yarn",
     "clientFramework": "react",
     "clientTheme": "none",
     "clientThemeVariant": "",
@@ -36,7 +36,11 @@
     "otherModules": [],
     "enableTranslation": true,
     "nativeLanguage": "en",
-    "languages": ["en"],
-    "blueprints": []
-  }
+    "languages": ["en", "fr"],
+    "blueprints": [],
+    "skipUserManagement": true,
+    "skipClient": false,
+    "skipServer": false
+  },
+  "entities": ["Product", "ProductCategory", "Customer", "ProductOrder", "OrderItem", "Invoice", "Shipment"]
 }

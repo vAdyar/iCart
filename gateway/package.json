@@ -112,28 +112,33 @@
     "workbox-webpack-plugin": "5.1.3",
     "write-file-webpack-plugin": "4.5.1"
   },
+  "resolutions": {
+    "@types/react": "16.9.34",
+    "redux": "4.0.5"
+  },
   "engines": {
-    "node": ">=12.16.1"
+    "node": ">=12.16.1",
+    "yarn": ">=1.19.0"
   },
   "scripts": {
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,ts,tsx,css,scss,yml}\"",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "yarn run lint --fix",
     "cleanup": "rimraf target/classes/static/",
-    "start": "npm run webpack:dev",
-    "start-tls": "npm run webpack:dev -- --env.tls",
+    "start": "yarn run webpack:dev",
+    "start-tls": "yarn run webpack:dev --env.tls",
     "jest": "jest --coverage --logHeapUsage --maxWorkers=2 --config src/test/javascript/jest.conf.js",
-    "jest:update": "npm run jest -- --updateSnapshot",
-    "test": "npm run lint && npm run jest",
-    "test-ci": "npm run lint && npm run jest:update",
-    "test:watch": "npm test -- --watch",
-    "webpack:dev": "npm run webpack-dev-server -- --config webpack/webpack.dev.js --inline --port=9060 --env.stats=minimal",
-    "webpack:dev-verbose": "npm run webpack-dev-server -- --config webpack/webpack.dev.js --inline --port=9060 --profile --progress --env.stats=normal",
-    "webpack:build:main": "npm run webpack -- --config webpack/webpack.dev.js --env.stats=minimal",
-    "webpack:build": "npm run cleanup && npm run webpack:build:main",
-    "webpack:prod:main": "npm run webpack -- --config webpack/webpack.prod.js --profile",
-    "webpack:prod": "npm run cleanup && npm run webpack:prod:main",
-    "webpack:test": "npm run test",
+    "jest:update": "yarn run jest --updateSnapshot",
+    "test": "yarn run lint && yarn run jest",
+    "test-ci": "yarn run lint && yarn run jest:update",
+    "test:watch": "yarn test --watch",
+    "webpack:dev": "yarn run webpack-dev-server --config webpack/webpack.dev.js --inline --port=9060 --env.stats=minimal",
+    "webpack:dev-verbose": "yarn run webpack-dev-server --config webpack/webpack.dev.js --inline --port=9060 --profile --progress --env.stats=normal",
+    "webpack:build:main": "yarn run webpack --config webpack/webpack.dev.js --env.stats=minimal",
+    "webpack:build": "yarn run cleanup && yarn run webpack:build:main",
+    "webpack:prod:main": "yarn run webpack --config webpack/webpack.prod.js --profile",
+    "webpack:prod": "yarn run cleanup && yarn run webpack:prod:main",
+    "webpack:test": "yarn run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
   },
