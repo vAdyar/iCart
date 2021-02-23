@@ -1,5 +1,6 @@
 package com.application.cart.web.rest;
 
+import com.application.cart.client.CatalogueClient;
 import com.application.cart.domain.Product;
 import com.application.cart.service.ProductService;
 import com.application.cart.web.rest.errors.BadRequestAlertException;
@@ -9,8 +10,10 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,6 +40,9 @@ public class ProductResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+
+    @Autowired
+    private CatalogueClient catalogueClient;
 
     private final ProductService productService;
 
@@ -93,7 +99,12 @@ public class ProductResource {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts(Pageable pageable) {
         log.debug("REST request to get a page of Products");
-        Page<Product> page = productService.findAll(pageable);
+//        Page<Product> page = productService.findAll(pageable);
+        List<Product> products = catalogueClient.products(pageable);
+        int start = Integer.valueOf(String.valueOf(pageable.getOffset()));
+        int end = (start + pageable.getPageSize()) > products.size() ? products.size() : (start + pageable.getPageSize());
+        Page<Product> page = new PageImpl<Product>(products.subList(start, end), pageable, products.size());
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
