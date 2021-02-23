@@ -1,1 +1,3 @@
 # iCart
+
+### A jHipster project.
