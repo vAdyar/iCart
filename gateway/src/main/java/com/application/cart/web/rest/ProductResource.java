@@ -4,31 +4,28 @@ import com.application.cart.client.CatalogueClient;
 import com.application.cart.domain.Product;
 import com.application.cart.service.ProductService;
 import com.application.cart.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * REST controller for managing {@link com.application.cart.domain.Product}.
+ * REST controller for managing {@link Product}.
  */
 @RestController
 @RequestMapping("/api")
@@ -41,6 +38,7 @@ public class ProductResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Qualifier("com.application.cart.client.CatalogueClient")
     @Autowired
     private CatalogueClient catalogueClient;
 
@@ -63,7 +61,7 @@ public class ProductResource {
         if (product.getId() != null) {
             throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Product result = productService.save(product);
+        Product result = catalogueClient.createProduct(product);
         return ResponseEntity.created(new URI("/api/products/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -84,7 +82,7 @@ public class ProductResource {
         if (product.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Product result = productService.save(product);
+        Product result = catalogueClient.updateProduct(product);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, product.getId().toString()))
             .body(result);
@@ -99,7 +97,6 @@ public class ProductResource {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts(Pageable pageable) {
         log.debug("REST request to get a page of Products");
-//        Page<Product> page = productService.findAll(pageable);
         List<Product> products = catalogueClient.products(pageable);
         int start = Integer.valueOf(String.valueOf(pageable.getOffset()));
         int end = (start + pageable.getPageSize()) > products.size() ? products.size() : (start + pageable.getPageSize());
@@ -118,8 +115,8 @@ public class ProductResource {
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
         log.debug("REST request to get Product : {}", id);
-        Optional<Product> product = productService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(product);
+        Product product = catalogueClient.getProduct(id);
+        return ResponseEntity.ok(product);
     }
 
     /**
@@ -131,7 +128,7 @@ public class ProductResource {
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         log.debug("REST request to delete Product : {}", id);
-        productService.delete(id);
+        catalogueClient.deleteProduct(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }
